@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的
+例如namespace="com.zhangguo.mybatis01.dao.studentMapper"就是com.zhangguo.mybatis01.dao(包名)+studentMapper(studentMapper.xml文件去除后缀)
+-->
+<!--这里的namespace 是自定义的，保证唯一就可以-->
+<mapper namespace="com.nf.mybatis.abc">
+    <!-- 在select标签中编写查询的SQL语句， 设置select标签的id属性为selectStudentById，id属性值必须是唯一的，不能够重复
+ 使用parameterType属性指明查询时使用的参数类型，resultType属性指明查询返回的结果集类型
+resultType="com.zhangguo.mybatis01.entities.Student"就表示将查询结果封装成一个Student类的对象返回
+Student类就是student表所对应的实体类
+-->
+    <!--
+    根据id查询得到一个user对象
+ -->
+    <select id="selectUserByUid" resultType="com.nf.mybatis.Entity.User">
+        select * from information where uid = #{uid}
+    </select>
+
+    <select id="selectUserByName" resultType="com.nf.mybatis.Entity.User">
+        select * from information where uname=#{uname}
+    </select>
+
+    <resultMap id="seeShare" type="com.nf.mybatis.Entity.User">
+        <id column="uid" property="uid" />
+        <result column="uname" property="uname" />
+        <result column="uage" property="uage" />
+        <result column="usex" property="usex" />
+        <result column="udesc" property="udesc" />
+    </resultMap>
+    <select id="selectAll" resultMap="seeShare">
+        select * from information;
+    </select>
+
+    <insert id="addUser" parameterType="com.nf.mybatis.Entity.User"
+            useGeneratedKeys="true" keyProperty="uid">
+       insert into information(uname,uage,usex,udesc) values(#{uname},#{uage},#{usex},#{udesc})
+    </insert>
+
+    <update id="updateUser" parameterType="com.nf.mybatis.Entity.User" >
+        update information set uname=#{uname},uage=#{uage},usex=#{usex},udesc=#{udesc} where uid=#{uid}
+    </update>
+
+    <delete id="deleteUser" parameterType="int">
+        delete from information where uid=#{uid}
+    </delete>
+
+</mapper>
